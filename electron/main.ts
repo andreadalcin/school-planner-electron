@@ -2,6 +2,8 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
+const { autoUpdater } = require('electron-updater');
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -35,6 +37,9 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  // Auto-update
+  autoUpdater.checkForUpdatesAndNotify();
+
   // DevTools
   installExtension(REACT_DEVELOPER_TOOLS)
     .then((name) => console.log(`Added Extension:  ${name}`))
