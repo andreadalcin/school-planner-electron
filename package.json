@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p electron && electron .\"",
-    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "electron:build": "yarn build && tsc -p electron && electron-builder --mac --win",
     "eject": "react-scripts eject"
   },
   "build": {
@@ -43,20 +43,24 @@
     },
     "mac": {
       "category": "public.app-category.education",
+      "publish": ["github"],
       "target": [
         {
           "target": "dmg",
-          "arch": [
-            "universal"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "universal"
-          ]
+          "arch": ["universal"]
         }
       ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false
     }
   },
   "eslintConfig": {
@@ -86,6 +90,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/cli.git"
+    "url": "https://github.com/andreadalcin/school-planner-electron.git"
   }
 }
