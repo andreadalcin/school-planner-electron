@@ -173,7 +173,7 @@ app.on('activate', () => {
       "build/**/*"
     ],
     "directories": {
-      "buildResources": "assets" # change the resource directory from 'build' to 'assets'
+      "buildResources": "static" # change the resource directory from 'build' to 'static'
     }
   },
 ```
