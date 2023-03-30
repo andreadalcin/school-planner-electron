@@ -14,8 +14,9 @@ const createWindow = (): void => {
     const mainWindow = new BrowserWindow({
         height: 720,
         width: 1152,
-        titleBarStyle: 'hidden',
-        trafficLightPosition: {x: 16, y: 15}
+        titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
+        trafficLightPosition: {x: 16, y: 15},
+        autoHideMenuBar: true
     });
 
     // and load the index.html of the app.
