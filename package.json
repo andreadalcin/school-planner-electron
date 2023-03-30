@@ -1,8 +1,9 @@
 {
   "name": "school-planner",
-  "version": "1.0.0",
+  "productName": "School Planner",
+  "version": "1.0.3",
   "author": "Andrea Dal Cin",
-  "description": "School Planner desktop client",
+  "description": "School Planner Electron desktop client",
   "homepage": ".",
   "main": "build/electron/main.js",
   "private": true,
@@ -29,6 +30,7 @@
     "cross-env": "^7.0.3",
     "electron": "^23.1.0",
     "electron-builder": "^23.6.0",
+    "electron-builder-notarize": "^1.5.1",
     "wait-on": "^7.0.1"
   },
   "scripts": {
@@ -38,6 +40,7 @@
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p electron && electron .\"",
     "electron:build": "yarn build && tsc -p electron && electron-builder --mac --win",
+    "electron:release": "yarn build && tsc -p electron && electron-builder -p always --mac --win",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -64,12 +67,16 @@
   },
   "build": {
     "extends": null,
+    "appId": "io.schoolplanner.electron.app",
+    "productName": "School Planner",
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "public"
     },
+    "afterSign": "electron-builder-notarize",
     "mac": {
       "category": "public.app-category.education",
       "icon": "public/icon.png",
@@ -82,10 +89,21 @@
           "arch": [
             "universal"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
         }
-      ]
+      ],
+      "hardenedRuntime": true,
+      "entitlements": "./node_modules/electron-builder-notarize/entitlements.mac.inherit.plist"
     },
     "win": {
+      "publish": [
+        "github"
+      ],
       "target": [
         {
           "target": "nsis",
